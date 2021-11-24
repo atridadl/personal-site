@@ -1,0 +1,23 @@
+build site:
+  image: node:latest
+  stage: build
+  script:
+    - yarn
+    - yarn build
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - dist
+  only:
+    - main
+    - master
+
+deploy:
+  image: node:latest
+  stage: deploy
+  script:
+    - npm -g install cloudron-surfer
+    - surfer put --token "$SURFER_TOKEN" --server "$SURFER_URL" dist/* /
+  only:
+    - main
+    - master
