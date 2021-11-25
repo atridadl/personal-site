@@ -12,17 +12,11 @@ steps:
 - name: deploy
   image: node
   environment:
-    SURFER_USERNAME:
-      from_secret: SURFER_USERNAME
-    SURFER_PASSWORD:
-      from_secret: SURFER_PASSWORD
     SURFER_TOKEN:
       from_secret: SURFER_TOKEN
     SURFER_URL:
       from_secret: SURFER_URL
   commands:
   - echo $SURFER_URL
-  - echo ${SURFER_URL}
   - npm -g install cloudron-surfer
-  - surfer login ${SURFER_URL} --username ${SURFER_USERNAME} --password ${SURFER_PASSWORD}
-  - surfer put dist/* /
+  - surfer put --token $SURFER_URL --server $SURFER_URL dist/* /
