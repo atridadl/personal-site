@@ -11,7 +11,7 @@ steps:
 
 - name: deploy
   image: node
-  envoronment:
+  environment:
     SURFER_USERNAME:
       from_secret: SURFER_USERNAME
     SURFER_PASSWORD:
