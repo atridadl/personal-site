@@ -18,4 +18,4 @@ steps:
       from_secret: SURVER_URL
   commands:
   - npm -g install cloudron-surfer
-  - surfer put --token "$SURFER_TOKEN" --server "$SURFER_URL" dist/* /
+  - surfer put --token $SURFER_TOKEN --server $SURFER_URL dist/* /
