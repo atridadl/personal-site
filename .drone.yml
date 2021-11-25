@@ -20,5 +20,5 @@ steps:
       from_secret: SURVER_URL
   commands:
   - npm -g install cloudron-surfer
-  - surfer login $SURFER_URL --username $SURFER_USERNAME --password $SURFER_PASSWORD
+  - surfer login --url $SURFER_URL --username $SURFER_USERNAME --password $SURFER_PASSWORD
   - surfer put dist/* / --
