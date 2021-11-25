@@ -9,13 +9,16 @@ steps:
   - yarn
   - yarn build
 
-- name: frontend
+- name: deploy
   image: node
   envoronment:
-    SURFER_TOKEN:
-      from_secret: SURFER_TOKEN
+    SURFER_USERNAME:
+      from_secret: SURFER_USERNAME
+    SURFER_PASSWORD:
+      from_secret: SURFER_PASSWORD
     SURVER_URL:
       from_secret: SURVER_URL
   commands:
   - npm -g install cloudron-surfer
-  - surfer put --token $SURFER_TOKEN --server $SURFER_URL dist/* /
+  - surfer login --username $SURFER_USERNAME --password $SURFER_PASSWORD $SURFER_URL
+  - surfer put dist/* / --
