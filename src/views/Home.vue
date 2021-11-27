@@ -22,7 +22,7 @@
         <v-btn
           v-for="social in socialLinks"
           :key="social.id"
-          class="mx-2"
+          class="ma-2"
           icon
           :href="social.url"
           target="_blank"
