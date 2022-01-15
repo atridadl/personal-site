@@ -1,22 +1,22 @@
 kind: pipeline
- type: docker
- name: default
- 
- steps:
- - name: build
-   image: node
-   commands:
-   - yarn
-   - yarn build
- 
- - name: deploy
-   image: node
-   environment:
-     SURFER_TOKEN:
-       from_secret: SURFER_TOKEN
-     SURFER_URL:
-       from_secret: SURFER_URL
-   commands:
-   - echo $SURFER_URL
-   - npm -g install cloudron-surfer
-   - surfer put --token $SURFER_TOKEN --server $SURFER_URL dist/* /
+type: docker
+name: default
+
+steps:
+- name: build
+  image: node
+  commands:
+  - yarn
+  - yarn build
+
+- name: deploy
+  image: node
+  environment:
+    SURFER_TOKEN:
+      from_secret: SURFER_TOKEN
+    SURFER_URL:
+      from_secret: SURFER_URL
+  commands:
+  - echo $SURFER_URL
+  - npm -g install cloudron-surfer
+  - surfer put --token $SURFER_TOKEN --server $SURFER_URL dist/* /
