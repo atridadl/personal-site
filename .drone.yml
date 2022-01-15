@@ -10,7 +10,7 @@ steps:
   - yarn build
 
 - name: deploy
-  image: node
+  image: node:16
   environment:
     SURFER_TOKEN:
       from_secret: SURFER_TOKEN
