@@ -1,21 +1,12 @@
 <template>
-  <li class="transition-all duration-500 ease-in-out">
+  <div class="transition-all duration-500 ease-in-out">
     <a :href="`/blog/${post.slug}`">
-      <nuxt-img
-        class="rounded-lg"
-        :src="post.image"
-        preset="preview"
-        width="400"
-        height="300"
-      />
-      <ul v-if="post.tags" class="flex space-x-3 mt-2">
-        <li class="text-gray-400 font-bold" v-for="tag in post.tags" :key="tag">
-          {{ tag }}
-        </li>
-      </ul>
-      <h2 class="mt-2 text-3xl font-semibold">{{ post.title }}</h2>
+      <div class="flex flex-wrap justify-center items-center">
+        <IconChevronRight :size="32" />
+        <h2 class="text-2xl font-semibold">{{ post.title }}</h2>
+      </div>
     </a>
-  </li>
+  </div>
 </template>
 
 <script>

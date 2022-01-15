@@ -33,7 +33,8 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtjs/tailwindcss',
-    '@nuxt/image'
+    '@nuxt/image',
+    'lucide-vue/nuxt'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
