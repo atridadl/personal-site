@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen w-screen bg-purple-200">
-    <nav class="bg-purple-200 shadow-lg w-full">
+    <nav class="bg-purple-200 shadow-lg w-full absolute">
       <div class="max-w-6xl mx-auto px-4">
         <div class="flex justify-between">
           <div class="flex space-x-7">
@@ -22,9 +22,7 @@
         </div>
       </div>
     </nav>
-    <div class="max-w-7xl mx-auto grid place-items-center h-screen">
-      <Nuxt class="py-6"/>
-    </div>
+    <Nuxt class="py-32"/>
   </div>
 </template>
 
