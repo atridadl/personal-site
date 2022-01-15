@@ -7,7 +7,7 @@ steps:
   image: node:16
   commands:
   - yarn
-  - yarn build
+  - yarn generate
 
 - name: deploy
   image: node:16
