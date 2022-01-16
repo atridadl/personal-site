@@ -26,12 +26,12 @@
         <td class="border px-4 py-2">Monthly</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">I.T. Consulting</td>
+        <td class="border px-4 py-2">Web Hosting 1GB Addon</td>
         <td class="border px-4 py-2">$1 CAD</td>
         <td class="border px-4 py-2">Monthly</td>
       </tr>
       <tr>
-        <td class="border px-4 py-2">I.T. Consulting</td>
+        <td class="border px-4 py-2">Groupware (Email, Storage, Calendar)</td>
         <td class="border px-4 py-2">$5 CAD</td>
         <td class="border px-4 py-2">Monthly, per person</td>
       </tr>
