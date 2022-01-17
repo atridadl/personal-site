@@ -7,7 +7,7 @@
             <!-- Website Logo -->
             <div>
               <a href="/" class="flex items-center py-4 px-2">
-                <img src="/logo.png" alt="Logo" class="h-8 w-8 mr-2" />
+                <img src="/logo-32.webp" alt="Logo" class="h-8 w-8 mr-2" />
                 <span class="font-semibold text-black text-lg"
                   >Atridad's Site</span
                 >
