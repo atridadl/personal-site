@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-7xl font-black text-center w-2/3 mx-auto">I do some freelance work too!</h1>
+    <h1 class="text-5xl font-black text-center w-2/3 mx-auto">I do some freelance work too!</h1>
     <h2 class="text-2xl font-black text-center w-2/3 mx-auto">I have a number of services ranging from I.T. Consulting (network setup, computer builds, I.T. workflow recommendations) to Web Development and Hosting. If you have any questions or would like pricing details, please feel free to send me an email at <a class="text-pink-600" href="mailto:atridad@icloud.com">atridad@icloud.com</a></h2>
     
     <h3 class="text-xl font-black text-center mt-6 w-2/3 mx-auto">My services:</h3>
