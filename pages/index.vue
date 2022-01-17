@@ -5,7 +5,7 @@
 
     <nuxt-img
       class="rounded-lg mx-auto my-6"
-      src="/logo.png"
+      src="/logo.webp"
       width="250"
       height="250"
     />
