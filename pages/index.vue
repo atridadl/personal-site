@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-7xl font-black text-center">Hi, I'm Atridad!</h1>
+    <h1 class="text-5xl font-black text-center">Hi, I'm Atridad!</h1>
     <h2 class="text-xl font-black text-center">(he/him)</h2>
 
     <nuxt-img

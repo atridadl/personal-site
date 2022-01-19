@@ -1,7 +1,7 @@
 <template>
   <div class="transition-all duration-500 ease-in-out">
     <a :href="`/blog/${post.slug}`">
-      <div class="flex flex-wrap justify-center items-center ">
+      <div class="flex flex-wrap justify-center items-center text-center">
         <h2 class="text-2xl font-semibold">[{{ post.date }}]: {{ post.title }}</h2>
       </div>
     </a>
