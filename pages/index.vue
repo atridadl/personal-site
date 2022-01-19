@@ -21,7 +21,7 @@
 
     <h2 class="text-3xl font-black text-center m-6">Posts:</h2>
 
-    <div class="flex flex-wrap justify-center items-center space-x-3 m-6">
+    <div class="mx-auto my-6">
       <PostPreview v-for="post in posts" :key="post.slug" :post="post" class="hover:text-pink-600"></PostPreview>
     </div>
   </div>
@@ -31,8 +31,8 @@
 export default {
   async asyncData({ $content }) {
     const posts = await $content()
-      .only(['title', 'slug'])
-      .sortBy('createdAt', 'desc')
+      .only(['title', 'slug', 'date'])
+      .sortBy('date', 'desc')
       .fetch()
       
     console.log("posts", posts)  

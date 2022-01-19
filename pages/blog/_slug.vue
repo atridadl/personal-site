@@ -4,6 +4,7 @@
       <div class="col-start-4 col-span-6 w-full">
         <div>
           <NuxtLink to="/" href="/" class="block text-gray-500 mt-8">← Go Back</NuxtLink>
+          <p>Posted: {{ post.date }}</p>
           <h1 class="text-5xl font-black mt-2">{{ post.title }}</h1>
         </div>
         <nuxt-content class="mt-4 prose max-w-none" :document="post" />

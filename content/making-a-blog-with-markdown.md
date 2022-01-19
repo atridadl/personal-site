@@ -1,5 +1,6 @@
 ---
 title: Making a blog with Markdown!
+date: 01/18/2022
 ---
 Making a blog has often become bloated, requiring that most people choose off the shelf solutions such as Wordpress or Ghost CMS, to name a few. While these platforms are great for those who just want to focus on the content and have a simpler experience, building a custom site can provide a clean and highly customizable experience.
 
