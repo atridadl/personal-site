@@ -3,7 +3,7 @@
     <div class="w-full col-start-1 col-span-12 grid grid-cols-12">
       <div class="col-start-4 col-span-6 w-full">
         <div>
-          <NuxtLink to="/" href="/" class="block text-gray-500 mt-8">← Go Back</NuxtLink>
+          <NuxtLink to="/" class="block text-gray-500 mt-8">← Go Back</NuxtLink>
           <p>Posted: {{ post.date }}</p>
           <h1 class="text-5xl font-black mt-2">{{ post.title }}</h1>
         </div>
