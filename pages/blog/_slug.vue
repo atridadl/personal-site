@@ -8,8 +8,6 @@
           <h1 class="text-5xl font-black mt-2">{{ post.title }}</h1>
         </div>
         <nuxt-content class="mt-4 prose max-w-none" :document="post" />
-        <script defer src="https://comments.atridad.dev/js/commento.js"></script>
-        <div id="commento"></div>
       </div>
     </div>
   </article>
