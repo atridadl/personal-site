@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     sendReaction(reaction) {
-      this.sdk.database.createDocument('61f37f8fe473a300c758', 'unique()', {
+      this.sdk.database.createDocument('61f79ec91525bc79ecfc', 'unique()', {
         value: reaction
       });
     }
