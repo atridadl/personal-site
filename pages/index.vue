@@ -69,15 +69,15 @@ export default {
       await sdk.account.createAnonymousSession();
     }
 
-    sdk.database.listDocuments('61f37f8fe473a300c758', [Query.equal('value', 1)]).then((res) => {
+    sdk.database.listDocuments('61f79ec91525bc79ecfc', [Query.equal('value', 1)]).then((res) => {
       this.thumbsUp = res.documents.length;
     });
 
-    sdk.database.listDocuments('61f37f8fe473a300c758', [Query.equal('value', 0)]).then((res) => {
+    sdk.database.listDocuments('61f79ec91525bc79ecfc', [Query.equal('value', 0)]).then((res) => {
       this.thumbsDown = res.documents.length;
     });
 
-    sdk.subscribe('collections.61f37f8fe473a300c758.documents', response => {
+    sdk.subscribe('collections.61f79ec91525bc79ecfc.documents', response => {
       (response.payload.value === 1) ? this.thumbsUp++ : this.thumbsDown++;
     });
   },
