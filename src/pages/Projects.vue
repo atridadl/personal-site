@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <div>
     <h1 class="text-5xl font-black text-center w-2/3 mx-auto mb-6">I work on some open source projects on the side:</h1>
@@ -15,8 +18,3 @@
     <p class="text-md text-center w-2/3 mx-auto">Pollo is an open-source, self-hosted, real-time polling solution targeting post-secondary educational institutions.</p>
   </div>
 </template>
-
-<script>
-export default {
-}
-</script>

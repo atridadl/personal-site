@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <div>
     <h1 class="text-5xl font-black text-center w-2/3 mx-auto">I do some freelance work too!</h1>
@@ -24,8 +27,3 @@
     <p class="text-md text-center w-2/3 mx-auto">I provide web hosting for your website and groupware (email, calendar, cloud storage) for you and your business, based entirely out of Edmonton. All services on my server are encrypted and backed up securely off-site in case of emergency.</p>
   </div>
 </template>
-
-<script>
-export default {
-}
-</script>
