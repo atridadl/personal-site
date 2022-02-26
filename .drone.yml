@@ -4,13 +4,13 @@ name: default
 
 steps:
 - name: build
-  image: node:16
+  image: node
   commands:
   - yarn
   - yarn build
 
 - name: deploy
-  image: node:16
+  image: node
   environment:
     FIREBASE_TOKEN:
       from_secret: FIREBASE_TOKEN
