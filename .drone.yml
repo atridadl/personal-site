@@ -15,5 +15,4 @@ steps:
     FIREBASE_TOKEN:
       from_secret: FIREBASE_TOKEN
   commands:
-  - npm -g install firebase-tools
-  - firebase deploy --token $FIREBASE_TOKEN --non-interactive
+  - yarn deploy:hosting --token $FIREBASE_TOKEN
