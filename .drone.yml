@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+- name: build
+  image: node:16
+  commands:
+  - yarn
+  - yarn build
+
+- name: deploy
+  image: node:16
+  environment:
+    FIREBASE_TOKEN:
+      from_secret: FIREBASE_TOKEN
+  commands:
+  - npm -g install firebase-tools
+  - firebase deploy --token $FIREBASE_TOKEN --non-interactive
