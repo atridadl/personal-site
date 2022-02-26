@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev:login":"firebase login",
+    "dev:serve": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "deploy:hosting": "firebase deploy --non-interactive",
     "preview": "vite preview"
