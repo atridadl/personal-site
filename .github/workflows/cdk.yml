@@ -21,3 +21,7 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     - run: npm i -g yarn
     - run: yarn
+    - run: yarn build
+    - run: cd cdk
+    - run: yarn
+    - run: yarn deploy:ci
