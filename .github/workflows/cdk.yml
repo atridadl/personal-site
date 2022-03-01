@@ -28,9 +28,14 @@ jobs:
       - run: yarn
       - run: yarn build
 
-      - name: Deploy
-        uses: udondan/cdk-nodejs@v0.4.0
+      - name: CDKDeploy
+        uses: arnaskro/aws-cdk-v2-github-actions@v2.2.1
         with:
+          cdk_subcommand: 'deploy'
+          cdk_args: '--require-approval never'
+          actions_comment: false
+          working_dir: "./cdk"
+        env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SUBDIR: cdk/
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
