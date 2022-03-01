@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "cd cdk && yarn install",
+    "deploy:ci": "cd cdk && yarn deploy:ci"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.14.0",
