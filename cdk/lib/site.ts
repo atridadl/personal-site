@@ -10,7 +10,7 @@ import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import { config } from 'process';
 
-export class CdkStack extends Stack {
+export class SiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
