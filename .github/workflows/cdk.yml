@@ -22,4 +22,6 @@ jobs:
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
+    - run: mkdir ~/.aws/
+    - run: touch ~/.aws/credentials
     - run: yarn deploy:ci
