@@ -11,7 +11,7 @@ import VueFeather from 'vue-feather';
     <img
       class="rounded-lg mx-auto my-6 max-w-[250px] w-1/2"
       src="/src/assets/logo.webp"
-      alt="A cartoon drawing of my face."
+      alt="A cartoon drawing of my me."
     />
 
     <div class="flex flex-wrap justify-center items-center space-x-3 m-6">
