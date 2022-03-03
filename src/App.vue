@@ -1,28 +1,28 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { routes } from "./router";
-import NavBar from "./components/NavBar.vue";
+  import { onMounted, ref } from "vue";
+  import { useRoute, useRouter } from "vue-router";
+  import { routes } from "./router";
+  import NavBar from "./components/NavBar.vue";
 
-const route = useRoute();
-const router = useRouter();
+  const route = useRoute();
+  const router = useRouter();
 
-const navButton = ref({
-  name: "Resume",
-  route: "https://cloud.lahutton.ca/s/mkfCEoB8i3Sz4KH/download"
-});
+  const navButton = ref({
+    name: "Resume",
+    route: "https://cloud.lahutton.ca/s/mkfCEoB8i3Sz4KH/download"
+  });
 
-function setViewHeight () {
-  let vh = window.innerHeight * 0.01
-  document.documentElement.style.setProperty('--vh', `${vh}px`)
-}
+  function setViewHeight () {
+    let vh = window.innerHeight * 0.01
+    document.documentElement.style.setProperty('--vh', `${vh}px`)
+  }
 
-onMounted(() => {
-  setViewHeight()
-  window.addEventListener('resize', () => {
+  onMounted(() => {
     setViewHeight()
+    window.addEventListener('resize', () => {
+      setViewHeight()
+    })
   })
-})
 </script>
 
 <template>

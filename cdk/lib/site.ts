@@ -8,7 +8,6 @@ import { Construct } from 'constructs';
 import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
-import { config } from 'process';
 
 export class SiteStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {

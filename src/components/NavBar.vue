@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+  import { ref } from 'vue';
 
-// props
-const props = defineProps(['items', 'button']);
+  // props
+  const props = defineProps(['items', 'button']);
 
-// data
-const open = ref(false);
+  // data
+  const open = ref(false);
 
-function toggle() {
-    open.value = !open.value;
-}
+  function toggle() {
+      open.value = !open.value;
+  }
 </script>
 
 <template>
