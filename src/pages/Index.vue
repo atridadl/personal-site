@@ -2,7 +2,7 @@
   import PillBox from "../components/PillBox.vue";
   import SocialLinks from "../components/SocialLinks.vue";
 
-  const skills = [
+  const pills = [
     { name: "Vue", colour: "green" },
     { name: "AWS", colour: "orange" },
     { name: "CDK", colour: "orange" },
@@ -41,6 +41,6 @@
 
     <h3 class="text-lg font-black text-center m-6">Some of my skills:</h3>
 
-    <PillBox :pills="skills" />
+    <PillBox :pills="pills" />
   </div>
 </template>
