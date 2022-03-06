@@ -8,8 +8,8 @@
   const router = useRouter();
 
   const navButton = ref({
-    name: "Resume",
-    route: "https://cloud.lahutton.ca/s/mkfCEoB8i3Sz4KH/download"
+    name: "Status",
+    route: "https://status.atridad.ca/status"
   });
 
   function setViewHeight () {

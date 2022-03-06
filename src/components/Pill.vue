@@ -6,6 +6,7 @@
             return "border-black text-black";
         }
         
+        // I fucking hate this but Tailwind seems to hate class names 
         switch (colourString) {
             case "black":
                 return "border-black text-black";
