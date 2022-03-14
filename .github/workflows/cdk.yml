@@ -23,8 +23,10 @@ jobs:
     - name: Use Node.js 16
       uses: actions/setup-node@v2
       with:
-          node-version: "16"
+        node-version: "16"
+      env:
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
-    - run: yarn deploy:ci
+    - run: yarn deploy:ci --region "$AWS_DEFAULT_REGION"

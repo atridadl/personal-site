@@ -7,6 +7,6 @@ const app = new cdk.App();
 
 new SiteStack(app, 'PersonalSiteStack', {
   env: {
-    region: "ca-central-1",
+    region: app.node.tryGetContext("region"),
   }
 });

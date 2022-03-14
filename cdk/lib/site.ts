@@ -10,13 +10,13 @@ import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 
 export class SiteStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
     // Grab Config
     const environmentConfig = {
       domain: ssm.StringParameter.valueForStringParameter(this, "domain"),
-      hostedZoneID: ssm.StringParameter.valueForStringParameter(this, "hostedZoneID")
+      hostedZoneID: ssm.StringParameter.valueForStringParameter(this, "hostedZoneID"),
     };
 
     // S3 Bucket
@@ -43,11 +43,6 @@ export class SiteStack extends Stack {
       hostedZone,
       region: "us-east-1",
     });
-
-		new CfnOutput(this, "certificate-arn", {
-			value: certificate.certificateArn,
-			exportName: "certificate-arn",
-		});
 
     // Cloudfront
    const cfDist = new cloudfront.CloudFrontWebDistribution(this, "PersonalSiteStaticBucketCloudfront", {
