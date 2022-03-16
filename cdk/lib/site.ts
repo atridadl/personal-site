@@ -9,15 +9,20 @@ import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 
+interface SiteStackProps extends StackProps {
+  domain: string;
+  hostedZoneID: string;
+};
+
 export class SiteStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+  constructor(scope: Construct, id: string, props: SiteStackProps) {
     super(scope, id, props);
 
     // Grab Config
-    const environmentConfig = {
-      domain: ssm.StringParameter.valueForStringParameter(this, "domain"),
-      hostedZoneID: ssm.StringParameter.valueForStringParameter(this, "hostedZoneID"),
-    };
+    // const environmentConfig = {
+    //   domain: ssm.StringParameter.valueForStringParameter(this, "domain"),
+    //   hostedZoneID: ssm.StringParameter.valueForStringParameter(this, "hostedZoneID"),
+    // };
 
     // S3 Bucket
     const bucket = new s3.Bucket(this, "PersonalSiteStaticBucket", {
@@ -34,12 +39,12 @@ export class SiteStack extends Stack {
 
     // Certs
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "PersonalSiteHostedZone", {
-      zoneName: environmentConfig.domain,
-      hostedZoneId: environmentConfig.hostedZoneID
+      zoneName: props.domain,
+      hostedZoneId: props.hostedZoneID
     });
 
     const certificate = new acm.DnsValidatedCertificate(this, 'CrossRegionCertificate', {
-      domainName: environmentConfig.domain,
+      domainName: props.domain,
       hostedZone,
       region: "us-east-1",
     });
@@ -53,18 +58,13 @@ export class SiteStack extends Stack {
         behaviors: [{ isDefaultBehavior: true }]
       }],
       viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(certificate, {
-          aliases: [environmentConfig.domain],
+          aliases: [props.domain],
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1,
           sslMethod: cloudfront.SSLMethod.SNI,
         },
       ),
       errorConfigurations: [{
         errorCode: 404,
-        responseCode: 200,
-        responsePagePath: "/index.html",
-      },
-      {
-        errorCode: 403,
         responseCode: 200,
         responsePagePath: "/index.html",
       }]
@@ -75,7 +75,7 @@ export class SiteStack extends Stack {
 		new ARecord(this, "personal-site-a-record", {
 			zone: hostedZone,
 			target,
-			recordName: environmentConfig.domain,
+			recordName: props.domain,
 		});
   }
 }

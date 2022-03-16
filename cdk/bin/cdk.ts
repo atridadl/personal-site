@@ -5,8 +5,14 @@ import { SiteStack } from '../lib/site';
 
 const app = new cdk.App();
 
+const region = app.node.tryGetContext("region");
+const domain = app.node.tryGetContext("domain");
+const hostedZoneID = app.node.tryGetContext("hostedzoneid");
+
 new SiteStack(app, 'PersonalSiteStack', {
   env: {
-    region: app.node.tryGetContext("region"),
-  }
+    region: region,
+  },
+  domain,
+  hostedZoneID
 });
