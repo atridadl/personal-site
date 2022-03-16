@@ -8,7 +8,7 @@
     "preview": "vite preview",
     "postinstall": "cd cdk && yarn install",
     "cdk:bootstrap": "cd cdk && cdk bootstrap",
-    "cdk:synth": "yarn build && cd cdk && yarn synth",
+    "cdk:synth": "cd cdk && yarn synth",
     "cdk:deploy": "cd cdk && yarn deploy"
   },
   "dependencies": {
