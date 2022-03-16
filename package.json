@@ -9,7 +9,7 @@
     "postinstall": "cd cdk && yarn install",
     "cdk:bootstrap": "cd cdk && cdk bootstrap",
     "cdk:synth": "yarn build && cd cdk && yarn synth",
-    "cdk:deploy": "yarn build cd cdk && yarn deploy"
+    "cdk:deploy": "cd cdk && yarn deploy"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.14.0",
