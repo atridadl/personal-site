@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "cdk:install": "yarn install && cd cdk && yarn install",
+    "postinstall": "cd cdk && yarn install",
     "cdk:bootstrap": "cd cdk && cdk bootstrap",
     "cdk:synth": "yarn build && cd cdk && yarn synth",
     "cdk:deploy": "yarn build cd cdk && yarn deploy:ci"
