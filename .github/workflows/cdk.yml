@@ -31,4 +31,4 @@ jobs:
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
-    - run: yarn deploy --region "$AWS_DEFAULT_REGION" --domain "$AWS_DOMAIN" --hostedzoneid "$AWS_HOSTEDZONEID"
+    - run: yarn cdk:deploy --region "$AWS_DEFAULT_REGION" --domain "$AWS_DOMAIN" --hostedzoneid "$AWS_HOSTEDZONEID"
