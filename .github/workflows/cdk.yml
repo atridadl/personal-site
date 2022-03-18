@@ -24,11 +24,14 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: "16"
+    - name: Install yarn
+      run: npm i -g yarn
+    - name: Install SPA Dependencies
+      run: yarn
+    - name: Build SPA
+      run: yarn build
+    - name: Run CDK Deploy
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
-      run: npm i -g yarn
-      run: yarn
-      run: yarn build
-      run: echo $AWS_DOMAIN
       run: cd cdk && yarn deploy --parameters domain=$AWS_DOMAIN  --parameters hostedZoneID=$AWS_HOSTEDZONEID
