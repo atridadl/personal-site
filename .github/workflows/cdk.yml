@@ -30,4 +30,5 @@ jobs:
     - run: npm i -g yarn
     - run: yarn
     - run: yarn build
+    - run: echo $AWS_DOMAIN
     - run: cd cdk && yarn deploy --parameters domain=$AWS_DOMAIN  --parameters hostedZoneID=$AWS_HOSTEDZONEID
