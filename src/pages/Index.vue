@@ -37,7 +37,7 @@
 
     <SocialLinks :links="socialLinks" />
 
-    <h3 class="text-2xl font-black text-center m-6">Freelance Software Engineer, Sysadmin, and Certified Nerd</h3>
+    <h3 class="text-2xl font-black text-center m-6">Half software developer. Half gamer. All nerd.</h3>
 
     <h3 class="text-lg font-black text-center m-6">Some of my skills:</h3>
 

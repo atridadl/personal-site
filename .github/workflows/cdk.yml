@@ -13,7 +13,7 @@ jobs:
     - name: Git clone the repository
       uses: actions/checkout@v1
 
-    - name: configure aws credentials
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@master
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -26,11 +26,11 @@ jobs:
         node-version: "16"
     - name: Install yarn
       run: npm i -g yarn
-    - name: Install SPA Dependencies
+    - name: Install SPA dependencies
       run: yarn
     - name: Build SPA
       run: yarn build
-    - name: Run CDK Deploy
+    - name: Run CDK deploy
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
