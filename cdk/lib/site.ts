@@ -1,4 +1,4 @@
-import { Stack, StackProps, CfnOutput, aws_iotcoredeviceadvisor } from 'aws-cdk-lib';
+import { Stack, StackProps, CfnParameter } from 'aws-cdk-lib';
 import { aws_s3 as s3 } from 'aws-cdk-lib';
 import { aws_s3_deployment as s3Deployment } from 'aws-cdk-lib';
 import { aws_cloudfront as cloudfront } from 'aws-cdk-lib';
@@ -7,22 +7,19 @@ import { aws_route53 as route53 } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
-import * as ssm from 'aws-cdk-lib/aws-ssm';
-
-interface SiteStackProps extends StackProps {
-  domain: string;
-  hostedZoneID: string;
-};
 
 export class SiteStack extends Stack {
-  constructor(scope: Construct, id: string, props: SiteStackProps) {
+  constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    // Grab Config
-    // const environmentConfig = {
-    //   domain: ssm.StringParameter.valueForStringParameter(this, "domain"),
-    //   hostedZoneID: ssm.StringParameter.valueForStringParameter(this, "hostedZoneID"),
-    // };
+    // Params
+    const domain = new CfnParameter(this, "domain", {
+      type: "String",
+      description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
+
+    const hostedZoneID = new CfnParameter(this, "hostedZoneID", {
+      type: "String",
+      description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
 
     // S3 Bucket
     const bucket = new s3.Bucket(this, "PersonalSiteStaticBucket", {
@@ -39,12 +36,12 @@ export class SiteStack extends Stack {
 
     // Certs
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "PersonalSiteHostedZone", {
-      zoneName: props.domain,
-      hostedZoneId: props.hostedZoneID
+      zoneName: domain.valueAsString,
+      hostedZoneId: hostedZoneID.valueAsString
     });
 
     const certificate = new acm.DnsValidatedCertificate(this, 'CrossRegionCertificate', {
-      domainName: props.domain,
+      domainName: domain.valueAsString,
       hostedZone,
       region: "us-east-1",
     });
@@ -58,7 +55,7 @@ export class SiteStack extends Stack {
         behaviors: [{ isDefaultBehavior: true }]
       }],
       viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(certificate, {
-          aliases: [props.domain],
+          aliases: [domain.valueAsString],
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1,
           sslMethod: cloudfront.SSLMethod.SNI,
         },
@@ -75,7 +72,7 @@ export class SiteStack extends Stack {
 		new ARecord(this, "personal-site-a-record", {
 			zone: hostedZone,
 			target,
-			recordName: props.domain,
+			recordName: domain.valueAsString,
 		});
   }
 }
