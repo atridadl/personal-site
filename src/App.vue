@@ -36,8 +36,4 @@
 html {
   background-color: #ddd6fe;
 }
-.router-link-exact-active {
-    font-weight: bold;
-    color: #db2777 !important;
-}
 </style>
