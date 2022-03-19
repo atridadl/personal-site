@@ -28,15 +28,6 @@ export class SiteStack extends Stack {
       websiteIndexDocument: "index.html",
     });
 
-    // S3 Bucket Deployment
-    new s3Deployment.BucketDeployment(this, "DeployPersonalSiteStatic", {
-      sources: [s3Deployment.Source.asset("../dist")],
-      destinationBucket: bucket,
-      distributionPaths: [
-        "/*"
-      ]
-    });
-
     // Certs
     const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "PersonalSiteHostedZone", {
       zoneName: domain.valueAsString,
@@ -77,5 +68,15 @@ export class SiteStack extends Stack {
 			target,
 			recordName: domain.valueAsString,
 		});
+
+    // S3 Bucket Deployment
+    new s3Deployment.BucketDeployment(this, "DeployPersonalSiteStatic", {
+      sources: [s3Deployment.Source.asset("../dist")],
+      destinationBucket: bucket,
+      distribution: cfDist,
+      distributionPaths: [
+        "/*"
+      ]
+    });
   }
 }
