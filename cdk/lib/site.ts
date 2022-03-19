@@ -58,6 +58,11 @@ export class SiteStack extends Stack {
         errorCode: 404,
         responseCode: 200,
         responsePagePath: "/index.html",
+      },
+      {
+        errorCode: 403,
+        responseCode: 200,
+        responsePagePath: "/index.html",
       }]
     });
 
