@@ -2,7 +2,7 @@
   import { ref } from 'vue';
 
   // props
-  const props = defineProps(['items', 'button']);
+  const props = defineProps(['logoRoute', 'currentRoute', 'routes', 'button']);
 
   // data
   const open = ref(false);
@@ -15,7 +15,10 @@
 <template>
   <nav class="flex items-center justify-between flex-wrap p-6">
     <div class="flex items-center flex-no-shrink text-black mr-6">
-      <span class="font-semibold text-xl tracking-tight">Atridad</span>
+      <span v-if="currentRoute === '/'" class="font-semibold text-xl tracking-tight">Atridad</span>
+      <router-link v-else class="no-underline text-black hover:text-pink-600 font-semibold text-xl tracking-tight" :to="logoRoute">
+        Atridad
+      </router-link>
     </div>
     <div class="block sm:hidden">
       <button @click="toggle" class="flex items-center px-3 py-2 border rounded text-black border-black hover:text-pink-600 hover:border-pink-600">
@@ -24,7 +27,7 @@
     </div>
     <div :class="open ? 'block': 'hidden'" class="w-full flex-grow sm:flex sm:items-center sm:w-auto">
       <div class="text-sm sm:flex-grow">
-        <router-link v-for="item in items" :key="item.route" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :to="item.path">{{ item.name }}</router-link>
+        <router-link v-for="route in routes" :key="route.route" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :to="route.path">{{ route.name }}</router-link>
       </div>
       <div>
         <a :href="button.route" class="no-underline inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-pink-600 hover:text-pink-600 mt-4 sm:mt-0">{{ button.name }}</a>

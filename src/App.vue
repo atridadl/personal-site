@@ -7,6 +7,8 @@
   const route = useRoute();
   const router = useRouter();
 
+  const logoRoute = ref("/")
+
   const navButton = ref({
     name: "Status",
     route: "https://status.atridad.ca/status"
@@ -26,7 +28,7 @@
 </script>
 
 <template>
-  <NavBar :items="routes" :button="navButton" />
+  <NavBar :logoRoute="logoRoute" :currentRoute="route.path" :routes="routes" :button="navButton" />
   <router-view />
 </template>
 

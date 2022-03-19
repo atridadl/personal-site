@@ -31,7 +31,10 @@ export class SiteStack extends Stack {
     // S3 Bucket Deployment
     new s3Deployment.BucketDeployment(this, "DeployPersonalSiteStatic", {
       sources: [s3Deployment.Source.asset("../dist")],
-      destinationBucket: bucket
+      destinationBucket: bucket,
+      distributionPaths: [
+        "/*"
+      ]
     });
 
     // Certs
