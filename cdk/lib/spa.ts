@@ -8,40 +8,36 @@ import { Construct } from 'constructs';
 import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
-export class SiteStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+interface SPAStackProps extends StackProps {
+  domain: string,
+  hostedZoneID: string,
+};
+
+export class SPAStack extends Stack {
+  constructor(scope: Construct, id: string, props: SPAStackProps) {
     super(scope, id, props);
 
-    // Params
-    const domain = new CfnParameter(this, "domain", {
-      type: "String",
-      description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
-
-    const hostedZoneID = new CfnParameter(this, "hostedZoneID", {
-      type: "String",
-      description: "The name of the Amazon S3 bucket where uploaded files will be stored."});
-
     // S3 Bucket
-    const bucket = new s3.Bucket(this, "PersonalSiteStaticBucket", {
+    const bucket = new s3.Bucket(this, "SPAStaticBucket", {
       publicReadAccess: true,
-      bucketName: "personal-site-static-bucket",
+      bucketName: "spa-static-bucket",
       websiteIndexDocument: "index.html",
     });
 
     // Certs
-    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "PersonalSiteHostedZone", {
-      zoneName: domain.valueAsString,
-      hostedZoneId: hostedZoneID.valueAsString
+    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "SPAHostedZone", {
+      zoneName: props.domain,
+      hostedZoneId: props.hostedZoneID
     });
 
     const certificate = new acm.DnsValidatedCertificate(this, 'CrossRegionCertificate', {
-      domainName: domain.valueAsString,
+      domainName: props.domain,
       hostedZone,
       region: "us-east-1",
     });
 
     // Cloudfront
-   const cfDist = new cloudfront.CloudFrontWebDistribution(this, "PersonalSiteStaticBucketCloudfront", {
+   const cfDist = new cloudfront.CloudFrontWebDistribution(this, "SPAStaticBucketCloudfront", {
       originConfigs: [{
         s3OriginSource: {
           s3BucketSource: bucket
@@ -49,7 +45,7 @@ export class SiteStack extends Stack {
         behaviors: [{ isDefaultBehavior: true }]
       }],
       viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(certificate, {
-          aliases: [domain.valueAsString],
+          aliases: [props.domain],
           securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1,
           sslMethod: cloudfront.SSLMethod.SNI,
         },
@@ -68,14 +64,14 @@ export class SiteStack extends Stack {
 
     const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
 
-		new ARecord(this, "personal-site-a-record", {
+		new ARecord(this, "spa-a-record", {
 			zone: hostedZone,
 			target,
-			recordName: domain.valueAsString,
+			recordName: props.domain,
 		});
 
     // S3 Bucket Deployment
-    new s3Deployment.BucketDeployment(this, "DeployPersonalSiteStatic", {
+    new s3Deployment.BucketDeployment(this, "DeploySPAStatic", {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: bucket,
       distribution: cfDist,

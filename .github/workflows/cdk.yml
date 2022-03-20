@@ -34,4 +34,4 @@ jobs:
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
-      run: cd cdk && yarn deploy --parameters domain=$AWS_DOMAIN  --parameters hostedZoneID=$AWS_HOSTEDZONEID
+      run: cd cdk && yarn deploy --context region=ca-central-1 --context domain=$AWS_DOMAIN  --context hostedZoneID=$AWS_HOSTEDZONEID --all

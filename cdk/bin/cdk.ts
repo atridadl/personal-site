@@ -1,12 +1,26 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { SiteStack } from '../lib/site';
+import { SPAStack } from '../lib/spa';
+import { APIStack } from '../lib/api'
 
 const app = new cdk.App();
 
-new SiteStack(app, 'SiteStack', {
+// params
+const region = app.node.tryGetContext("region");
+const domain = app.node.tryGetContext("domain");
+const hostedZoneID = app.node.tryGetContext("hostedZoneID")
+
+new SPAStack(app, 'SPAStack', {
   env: {
-    region: "ca-central-1",
+    region,
+  },
+  domain,
+  hostedZoneID
+});
+
+new APIStack(app, 'APIStack', {
+  env: {
+    region,
   },
 });
