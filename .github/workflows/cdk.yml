@@ -34,4 +34,4 @@ jobs:
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
-      run: cd cdk && yarn deploy * -c stage=prod -c domain=$AWS_DOMAIN
+      run: cd cdk && yarn deploy -c stage=prod -c domain=$AWS_DOMAIN --all
