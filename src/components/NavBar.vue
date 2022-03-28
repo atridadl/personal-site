@@ -30,7 +30,7 @@
         <router-link v-for="route in routes" :key="route.route" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :to="route.path">{{ route.name }}</router-link>
       </div>
       <div>
-        <a :href="button.route" class="no-underline inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-pink-600 hover:text-pink-600 mt-4 sm:mt-0">{{ button.name }}</a>
+        <a :href="button.route" target="_blank" class="no-underline inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-pink-600 hover:text-pink-600 mt-4 sm:mt-0">{{ button.name }}</a>
       </div>
     </div>
   </nav>

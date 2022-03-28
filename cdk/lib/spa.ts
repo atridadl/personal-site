@@ -1,16 +1,16 @@
-import { Stack, StackProps, CfnParameter } from 'aws-cdk-lib';
-import { aws_s3 as s3 } from 'aws-cdk-lib';
-import { aws_s3_deployment as s3Deployment } from 'aws-cdk-lib';
-import { aws_cloudfront as cloudfront } from 'aws-cdk-lib';
-import { aws_certificatemanager as acm } from 'aws-cdk-lib';
-import { aws_route53 as route53 } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import { ARecord, RecordTarget } from 'aws-cdk-lib/aws-route53';
-import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
+import { Stack, StackProps, CfnParameter } from "aws-cdk-lib";
+import { aws_s3 as s3 } from "aws-cdk-lib";
+import { aws_s3_deployment as s3Deployment } from "aws-cdk-lib";
+import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
+import { aws_certificatemanager as acm } from "aws-cdk-lib";
+import { aws_route53 as route53 } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { ARecord, RecordTarget } from "aws-cdk-lib/aws-route53";
+import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 
 interface SPAStackProps extends StackProps {
+  stage: string,
   domain: string,
-  hostedZoneID: string,
 };
 
 export class SPAStack extends Stack {
@@ -18,26 +18,25 @@ export class SPAStack extends Stack {
     super(scope, id, props);
 
     // S3 Bucket
-    const bucket = new s3.Bucket(this, "SPAStaticBucket", {
+    const bucket = new s3.Bucket(this, `${ props.stage }-SPAStaticBucket`, {
       publicReadAccess: true,
-      bucketName: "spa-static-bucket",
+      bucketName: `${ props.stage }-spa-static-bucket`,
       websiteIndexDocument: "index.html",
     });
 
     // Certs
-    const hostedZone = route53.HostedZone.fromHostedZoneAttributes(this, "SPAHostedZone", {
-      zoneName: props.domain,
-      hostedZoneId: props.hostedZoneID
+    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.stage }-SPAHostedZone`, {
+      domainName: props.domain,
     });
 
-    const certificate = new acm.DnsValidatedCertificate(this, 'CrossRegionCertificate', {
+    const certificate = new acm.DnsValidatedCertificate(this, `${ props.stage }-CrossRegionCertificate`, {
       domainName: props.domain,
       hostedZone,
       region: "us-east-1",
     });
 
     // Cloudfront
-   const cfDist = new cloudfront.CloudFrontWebDistribution(this, "SPAStaticBucketCloudfront", {
+   const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-SPAStaticBucketCloudfront`, {
       originConfigs: [{
         s3OriginSource: {
           s3BucketSource: bucket
@@ -64,14 +63,14 @@ export class SPAStack extends Stack {
 
     const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
 
-		new ARecord(this, "spa-a-record", {
+		new ARecord(this, `${ props.stage }-SpaDNSRecord`, {
 			zone: hostedZone,
 			target,
 			recordName: props.domain,
 		});
 
     // S3 Bucket Deployment
-    new s3Deployment.BucketDeployment(this, "DeploySPAStatic", {
+    new s3Deployment.BucketDeployment(this, `${ props.stage }-DeploySPAStatic`, {
       sources: [s3Deployment.Source.asset("../dist")],
       destinationBucket: bucket,
       distribution: cfDist,
