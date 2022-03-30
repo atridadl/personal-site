@@ -3,6 +3,7 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { SPAStack } from "../lib/spa";
 import { APIStack } from "../lib/api";
+import { CFAStack } from "../lib/cloudfront";
 
 const app = new cdk.App();
 
@@ -22,7 +23,7 @@ if (!domain) {
 	);
 }
 
-new SPAStack(app, `${ stage }-SPAStack`, {
+const spaStack = new SPAStack(app, `${ stage }-SPAStack`, {
   env: {
     region: process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -31,10 +32,20 @@ new SPAStack(app, `${ stage }-SPAStack`, {
   domain,
 });
 
-new APIStack(app, `${ stage }-APIStack`, {
+const apiStack = new APIStack(app, `${ stage }-APIStack`, {
   env: {
     region: process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
   },
   stage
+});
+
+const cfStack = new CFAStack(app, `${ stage }-CFStack`, {
+  env: {
+    region: process.env.CDK_DEFAULT_REGION,
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+  },
+  stage,
+  domain,
+  bucket: spaStack.bucket
 });

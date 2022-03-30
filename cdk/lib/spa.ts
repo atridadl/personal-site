@@ -14,69 +14,15 @@ interface SPAStackProps extends StackProps {
 };
 
 export class SPAStack extends Stack {
+  public bucket: s3.Bucket;
   constructor(scope: Construct, id: string, props: SPAStackProps) {
     super(scope, id, props);
 
     // S3 Bucket
-    const bucket = new s3.Bucket(this, `${ props.stage }-SPAStaticBucket`, {
+    this.bucket = new s3.Bucket(this, `${ props.stage }-SPAStaticBucket`, {
       publicReadAccess: true,
       bucketName: `${ props.stage }-spa-static-bucket`,
       websiteIndexDocument: "index.html",
-    });
-
-    // Certs
-    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.stage }-SPAHostedZone`, {
-      domainName: props.domain,
-    });
-
-    const certificate = new acm.DnsValidatedCertificate(this, `${ props.stage }-CrossRegionCertificate`, {
-      domainName: props.domain,
-      hostedZone,
-      region: "us-east-1",
-    });
-
-    // Cloudfront
-   const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-SPAStaticBucketCloudfront`, {
-      originConfigs: [{
-        s3OriginSource: {
-          s3BucketSource: bucket
-        },
-        behaviors: [{ isDefaultBehavior: true }]
-      }],
-      viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(certificate, {
-          aliases: [props.domain],
-          securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1,
-          sslMethod: cloudfront.SSLMethod.SNI,
-        },
-      ),
-      errorConfigurations: [{
-        errorCode: 404,
-        responseCode: 200,
-        responsePagePath: "/index.html",
-      },
-      {
-        errorCode: 403,
-        responseCode: 200,
-        responsePagePath: "/index.html",
-      }]
-    });
-
-    const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
-
-		new ARecord(this, `${ props.stage }-SpaDNSRecord`, {
-			zone: hostedZone,
-			target,
-			recordName: props.domain,
-		});
-
-    // S3 Bucket Deployment
-    new s3Deployment.BucketDeployment(this, `${ props.stage }-DeploySPAStatic`, {
-      sources: [s3Deployment.Source.asset("../dist")],
-      destinationBucket: bucket,
-      distribution: cfDist,
-      distributionPaths: [
-        "/*"
-      ]
     });
   }
 }
