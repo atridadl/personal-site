@@ -9,6 +9,16 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
+"@aws-cdk/aws-apigatewayv2-alpha@^2.19.0-alpha.0":
+  version "2.19.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-alpha/-/aws-apigatewayv2-alpha-2.19.0-alpha.0.tgz#a083701954b19b22fe123745c3c093ecfa4e70fb"
+  integrity sha512-HKUJT+Dm1U9Ii+FOxMWC+b6fJFbCS1tIbVRt/j+wGDQLEaCR0oFsjzYX/8ens3XpRBiLpvg+q0EJBtA10b1lDw==
+
+"@aws-cdk/aws-apigatewayv2-integrations-alpha@^2.19.0-alpha.0":
+  version "2.19.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigatewayv2-integrations-alpha/-/aws-apigatewayv2-integrations-alpha-2.19.0-alpha.0.tgz#249d5e908f5f23f1c4d9603cb06c5efcf18aef12"
+  integrity sha512-zCZiLmmWL1Hija9O++rq+W95Sn5RW0mR4IjyMGYD/t+nDg2i1XIxJCdY2KHEJ2vhcyFsVfO4jo7dp5WfFoqFaw==
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.16.7":
   version "7.16.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.16.7.tgz#44416b6bd7624b998f5b1af5d470856c40138789"

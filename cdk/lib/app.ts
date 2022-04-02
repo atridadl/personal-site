@@ -8,7 +8,8 @@ import { Construct } from "constructs";
 import { ARecord, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 import path = require("path");
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -56,18 +57,17 @@ export class AppStack extends Stack {
         handler: "helloWorld.main",
     });
 
-    const restAPI = new apigateway.RestApi(this, `${ props.stage }-HelloWorldAPI`, {
-        restApiName: `${ props.stage }-HelloWorldAPI`,
-        description: "This API is a test."
+    const helloWorldIntegration = new HttpLambdaIntegration('BooksIntegration', helloWorld);
+
+    const httpApi = new HttpApi(this, `${ props.stage }-HelloWorldAPI`, {
+        apiName: `${ props.stage }-HelloWorldAPI`,
     });
 
-    const restAPIResource = restAPI.root.addResource("api")
-
-    const helloWorldIntegration = new apigateway.LambdaIntegration(helloWorld, {
-        requestTemplates: { "application/json": '{ "statusCode": "200" }' }
+    httpApi.addRoutes({
+        path: "/api/helloWorld", 
+        methods: [HttpMethod.GET],
+        integration: helloWorldIntegration,
     });
-
-    restAPIResource.addMethod("GET", helloWorldIntegration);
 
     const postTable = new dynamodb.Table(this, `${ props.stage }-PostTable`, {
         tableName: `${ props.stage }-PostTable`,
@@ -94,7 +94,7 @@ export class AppStack extends Stack {
         priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
         originConfigs: [{
             customOriginSource: {
-                domainName: `${restAPI.restApiId}.execute-api.${this.region}.amazonaws.com`,
+                domainName: `${httpApi.httpApiId}.execute-api.${this.region}.amazonaws.com`,
             },
             behaviors: [
                 {
