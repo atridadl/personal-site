@@ -50,6 +50,32 @@ export class AppStack extends Stack {
     });
 
     // ----------------------[API]----------------------
+    const httpApi = new HttpApi(this, `${ props.stage }-API`, {
+        apiName: `${ props.stage }-API`,
+    });
+
+    const staticRedirectCloudfrontEdgeFunction = new cloudfront.experimental.EdgeFunction(this, `${ props.stage }-staticRedirectCloudfrontEdgeFunction`, {
+        functionName: `${ props.stage }-staticRedirectCloudfrontEdgeFunction`,
+        runtime: lambda.Runtime.NODEJS_14_X,
+        code: lambda.Code.fromAsset(path.join(__dirname, 'serverless')),
+        handler: "staticRedirect.main",
+    });
+
+    const rootFunction = new lambda.Function(this, `${ props.stage }-rootFunction`, {
+        functionName: `${ props.stage }-RootFunction`,
+        runtime: lambda.Runtime.NODEJS_14_X,
+        code: lambda.Code.fromAsset(path.join(__dirname, 'serverless')),
+        handler: "root.main",
+    });
+
+    const rootFunctionIntegration = new HttpLambdaIntegration('RootFunctionIntegration', rootFunction);
+
+    httpApi.addRoutes({
+        path: "/api", 
+        methods: [HttpMethod.GET],
+        integration: rootFunctionIntegration,
+    });
+
     const helloWorld = new lambda.Function(this, `${ props.stage }-HelloWorld`, {
         functionName: `${ props.stage }-HelloWorld`,
         runtime: lambda.Runtime.NODEJS_14_X,
@@ -57,23 +83,13 @@ export class AppStack extends Stack {
         handler: "helloWorld.main",
     });
 
-    const helloWorldIntegration = new HttpLambdaIntegration('BooksIntegration', helloWorld);
-
-    const httpApi = new HttpApi(this, `${ props.stage }-HelloWorldAPI`, {
-        apiName: `${ props.stage }-HelloWorldAPI`,
-    });
+    const helloWorldIntegration = new HttpLambdaIntegration('HelloWorldIntegration', helloWorld);
 
     httpApi.addRoutes({
         path: "/api/helloWorld", 
         methods: [HttpMethod.GET],
         integration: helloWorldIntegration,
     });
-
-    const postTable = new dynamodb.Table(this, `${ props.stage }-PostTable`, {
-        tableName: `${ props.stage }-PostTable`,
-        partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-    });
-
     // ----------------------[Cloudfront]----------------------
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, "cloudfrontOAI", {
             comment: `Allows CloudFront access to S3 bucket`,
@@ -98,13 +114,22 @@ export class AppStack extends Stack {
             },
             behaviors: [
                 {
-                pathPattern: "/api/*",
-                allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
-                defaultTtl: Duration.seconds(0),
-                forwardedValues: {
-                    queryString: true,
-                    headers: ["Authorization"],
+                    pathPattern: "/api",
+                    allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
+                    defaultTtl: Duration.seconds(0),
+                    forwardedValues: {
+                        queryString: true,
+                        headers: ["Authorization"],
+                    },
                 },
+                {
+                    pathPattern: "/api/*",
+                    allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
+                    defaultTtl: Duration.seconds(0),
+                    forwardedValues: {
+                        queryString: true,
+                        headers: ["Authorization"],
+                    },
                 },
             ],
         },{
@@ -117,8 +142,11 @@ export class AppStack extends Stack {
                     compress: true,
                     isDefaultBehavior: true,
                     defaultTtl: Duration.seconds(0),
-                    allowedMethods:
-                    cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+                    allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
+                    lambdaFunctionAssociations: [{
+                        eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
+                        lambdaFunction: staticRedirectCloudfrontEdgeFunction.currentVersion,
+                    }],
                 },
             ]
         }],
