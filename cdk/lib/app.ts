@@ -143,9 +143,9 @@ export class AppStack extends Stack {
                     isDefaultBehavior: true,
                     defaultTtl: Duration.seconds(0),
                     allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
-                    lambdaFunctionAssociations: [{
+                    edgeLambdas: [{
                         eventType: cloudfront.LambdaEdgeEventType.VIEWER_REQUEST,
-                        lambdaFunction: staticRedirectCloudfrontEdgeFunction.currentVersion,
+                        functionVersion: staticRedirectCloudfrontEdgeFunction.currentVersion,
                     }],
                 },
             ]
