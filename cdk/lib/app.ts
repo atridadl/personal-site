@@ -54,13 +54,6 @@ export class AppStack extends Stack {
         apiName: `${ props.stage }-API`,
     });
 
-    const staticRedirectCloudfrontEdgeFunction = new cloudfront.experimental.EdgeFunction(this, `${ props.stage }-staticRedirectCloudfrontEdgeFunction`, {
-        functionName: `${ props.stage }-staticRedirectCloudfrontEdgeFunction`,
-        runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(path.join(__dirname, 'serverless')),
-        handler: "staticRedirect.main",
-    });
-
     const rootFunction = new lambda.Function(this, `${ props.stage }-rootFunction`, {
         functionName: `${ props.stage }-RootFunction`,
         runtime: lambda.Runtime.NODEJS_14_X,
