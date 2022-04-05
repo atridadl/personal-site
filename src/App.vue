@@ -11,7 +11,7 @@
 
   const navButton = ref({
     name: "Status",
-    route: "https://status.atridad.ca/status"
+    route: "https://status.atridad.ca/status/public"
   });
 
   function setViewHeight () {
