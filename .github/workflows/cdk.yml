@@ -24,14 +24,16 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: "16"
-    - name: Enter SPA directory
-      run: cd spa
     - name: Install yarn
       run: npm i -g yarn
     - name: Install SPA dependencies
-      run: yarn
+      run: cd spa && yarn
     - name: Build SPA
-      run: yarn build
+      run: cd spa && yarn build
+    - name: Install API dependencies
+      run: cd serverless && yarn
+    - name: Build API
+      run: cd serverless && yarn build
     - name: Run CDK deploy
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
