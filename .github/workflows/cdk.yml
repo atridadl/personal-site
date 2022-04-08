@@ -26,18 +26,10 @@ jobs:
         node-version: "16"
     - name: Install yarn
       run: npm i -g yarn
-    - name: SPA build and deploy
-      run: cd spa
-      run: yarn
+    - name: Install and build dependencies
       run: yarn build
-    - name: API build and deploy
-      run: cd serverless
-      run: yarn
-      run: yarn build
-    - name: CDK build and deploy
+    - name: Run CDK deploy
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
-      run: cd cdk
-      run: yarn deploy
       run: yarn deploy -c stage=prod -c domain=$AWS_DOMAIN --all
