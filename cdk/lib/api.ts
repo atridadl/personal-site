@@ -43,7 +43,7 @@ export class APIStack extends Stack {
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
 
     httpApi.addRoutes({
-        path: "", 
+        path: "/v1", 
         methods: [HttpMethod.GET],
         integration: rootFunctionIntegration,
     });
@@ -58,7 +58,7 @@ export class APIStack extends Stack {
     const statusCheckIntegration = new HttpLambdaIntegration('API-StatusCheckIntegration', statusCheck);
 
     httpApi.addRoutes({
-        path: "/helloWorld", 
+        path: "/v1/statusCheck", 
         methods: [HttpMethod.GET],
         integration: statusCheckIntegration,
     });
