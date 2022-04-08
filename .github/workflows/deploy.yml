@@ -1,4 +1,4 @@
-name: CDK Deploy
+name: Build and Deploy
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  prod:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Git clone the repository
