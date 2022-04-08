@@ -109,7 +109,7 @@ export class SPAStack extends Stack {
 
     // ----------------------[S3 Bucket Deployment]----------------------
     new s3Deployment.BucketDeployment(this, `${ props.stage }-DeploySPAStatic`, {
-        sources: [s3Deployment.Source.asset("../spa/dist")],
+        sources: [s3Deployment.Source.asset("../spaDist")],
         destinationBucket: bucket,
         distribution: cfDist,
         distributionPaths: [
