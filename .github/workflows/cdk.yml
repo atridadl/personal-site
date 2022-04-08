@@ -35,6 +35,11 @@ jobs:
     - name: Build API
       run: cd serverless && yarn build
     - name: Run CDK deploy
+    - name: Install CDK dependencies
+      run: cd cdk && yarn
+    - name: Build CDK
+      run: cd cdk && yarn build
+    - name: Run CDK deploy
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}

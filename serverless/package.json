@@ -5,9 +5,12 @@
     "cdk": "bin/cdk.js"
   },
   "scripts": {
-    "build": "cd functions && tsc",
-    "watch": "cd functions && tsc -w",
-    "test": "jest"
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "synth": "tsc && cdk synth",
+    "deploy": "tsc && cdk deploy --require-approval=never"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.93",
@@ -20,7 +23,7 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
-    "aws-cdk-lib": "2.14.0",
-    "aws-sdk": "^2.1101.0"
+    "aws-sdk": "^2.1101.0",
+    "source-map-support": "^0.5.16"
   }
 }
