@@ -57,7 +57,7 @@ export class AppStack extends Stack {
     const rootFunction = new lambda.Function(this, `${ props.stage }-rootFunction`, {
         functionName: `${ props.stage }-RootFunction`,
         runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(path.join(__dirname, 'serverless')),
+        code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "root.main",
     });
 
@@ -72,7 +72,7 @@ export class AppStack extends Stack {
     const helloWorld = new lambda.Function(this, `${ props.stage }-HelloWorld`, {
         functionName: `${ props.stage }-HelloWorld`,
         runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset(path.join(__dirname, 'serverless')),
+        code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "helloWorld.main",
     });
 
@@ -167,7 +167,7 @@ export class AppStack extends Stack {
 
     // ----------------------[S3 Bucket Deployment]----------------------
     new s3Deployment.BucketDeployment(this, `${ props.stage }-DeploySPAStatic`, {
-        sources: [s3Deployment.Source.asset("../dist")],
+        sources: [s3Deployment.Source.asset("../spa/dist")],
         destinationBucket: bucket,
         distribution: cfDist,
         distributionPaths: [
