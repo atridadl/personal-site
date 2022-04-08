@@ -9,7 +9,7 @@
     { name: "JavaScript", colour: "yellow" },
     { name: "TypeScript", colour: "blue" },
     { name: "Git", colour: "black" },
-    { name: "Golang", colour: "teal" },
+    { name: "Golang", colour: "cyan" },
     { name: "Bash", colour: "purple" },
     { name: "Firebase", colour: "orange" },
     { name: "WordPress", colour: "blue" },
