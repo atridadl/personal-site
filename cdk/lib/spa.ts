@@ -15,13 +15,13 @@ import path = require("path");
 import * as iam from "aws-cdk-lib/aws-iam";
 
 
-interface AppStackProps extends StackProps {
+interface SPAStackProps extends StackProps {
   stage: string,
   domain: string,
 };
 
-export class AppStack extends Stack {
-  constructor(scope: Construct, id: string, props: AppStackProps) {
+export class SPAStack extends Stack {
+  constructor(scope: Construct, id: string, props: SPAStackProps) {
     super(scope, id, props);
 
     // ----------------------[S3 Bucket]----------------------
@@ -48,41 +48,7 @@ export class AppStack extends Stack {
         hostedZone,
         region: "us-east-1",
     });
-
-    // ----------------------[API]----------------------
-    const httpApi = new HttpApi(this, `${ props.stage }-API`, {
-        apiName: `${ props.stage }-API`,
-    });
-
-    const rootFunction = new lambda.Function(this, `${ props.stage }-rootFunction`, {
-        functionName: `${ props.stage }-RootFunction`,
-        runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset("../serverless/functions"),
-        handler: "root.main",
-    });
-
-    const rootFunctionIntegration = new HttpLambdaIntegration('RootFunctionIntegration', rootFunction);
-
-    httpApi.addRoutes({
-        path: "/api", 
-        methods: [HttpMethod.GET],
-        integration: rootFunctionIntegration,
-    });
-
-    const helloWorld = new lambda.Function(this, `${ props.stage }-HelloWorld`, {
-        functionName: `${ props.stage }-HelloWorld`,
-        runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset("../serverless/functions"),
-        handler: "helloWorld.main",
-    });
-
-    const helloWorldIntegration = new HttpLambdaIntegration('HelloWorldIntegration', helloWorld);
-
-    httpApi.addRoutes({
-        path: "/api/helloWorld", 
-        methods: [HttpMethod.GET],
-        integration: helloWorldIntegration,
-    });
+    
     // ----------------------[Cloudfront]----------------------
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, "cloudfrontOAI", {
             comment: `Allows CloudFront access to S3 bucket`,
@@ -98,34 +64,10 @@ export class AppStack extends Stack {
         })
     );
 
-    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-AppStackCloudfront`, {
+    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-SPAStackCloudfront`, {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
         originConfigs: [{
-            customOriginSource: {
-                domainName: `${httpApi.httpApiId}.execute-api.${this.region}.amazonaws.com`,
-            },
-            behaviors: [
-                {
-                    pathPattern: "/api",
-                    allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
-                    defaultTtl: Duration.seconds(0),
-                    forwardedValues: {
-                        queryString: true,
-                        headers: ["Authorization"],
-                    },
-                },
-                {
-                    pathPattern: "/api/*",
-                    allowedMethods: cloudfront.CloudFrontAllowedMethods.ALL,
-                    defaultTtl: Duration.seconds(0),
-                    forwardedValues: {
-                        queryString: true,
-                        headers: ["Authorization"],
-                    },
-                },
-            ],
-        },{
             s3OriginSource: {
                 s3BucketSource: bucket,
                 originAccessIdentity: cloudfrontOAI,
@@ -159,7 +101,7 @@ export class AppStack extends Stack {
 
     const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
 
-    new ARecord(this, `${ props.stage }-DNSRecord`, {
+    new ARecord(this, `${ props.stage }-SPADNSRecord`, {
         zone: hostedZone,
         target,
         recordName: props.domain,
