@@ -34,7 +34,6 @@ jobs:
       run: cd serverless && yarn
     - name: Build API
       run: cd serverless && yarn build
-    - name: Run CDK deploy
     - name: Install CDK dependencies
       run: cd cdk && yarn
     - name: Build CDK
