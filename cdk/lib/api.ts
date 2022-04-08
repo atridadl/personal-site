@@ -1,6 +1,4 @@
 import { Stack, StackProps, Duration } from "aws-cdk-lib";
-import { aws_s3 as s3 } from "aws-cdk-lib";
-import { aws_s3_deployment as s3Deployment } from "aws-cdk-lib";
 import { aws_cloudfront as cloudfront } from "aws-cdk-lib";
 import { aws_certificatemanager as acm } from "aws-cdk-lib";
 import { aws_route53 as route53 } from "aws-cdk-lib";
@@ -10,10 +8,6 @@ import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import path = require("path");
-import * as iam from "aws-cdk-lib/aws-iam";
-
 
 interface APIStackProps extends StackProps {
   stage: string,
@@ -49,24 +43,24 @@ export class APIStack extends Stack {
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
 
     httpApi.addRoutes({
-        path: "/", 
+        path: "", 
         methods: [HttpMethod.GET],
         integration: rootFunctionIntegration,
     });
 
-    const helloWorld = new lambda.Function(this, `${ props.stage }-API-HelloWorld`, {
-        functionName: `${ props.stage }-API-HelloWorld`,
+    const statusCheck = new lambda.Function(this, `${ props.stage }-API-StatusCheck`, {
+        functionName: `${ props.stage }-API-StatusCheck`,
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset("../serverless/functions"),
-        handler: "helloWorld.main",
+        handler: "statusCheck.main",
     });
 
-    const helloWorldIntegration = new HttpLambdaIntegration('API-HelloWorldIntegration', helloWorld);
+    const statusCheckIntegration = new HttpLambdaIntegration('API-StatusCheckIntegration', statusCheck);
 
     httpApi.addRoutes({
         path: "/helloWorld", 
         methods: [HttpMethod.GET],
-        integration: helloWorldIntegration,
+        integration: statusCheckIntegration,
     });
     // ----------------------[Cloudfront]----------------------
     const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-APICloudfront`, {
