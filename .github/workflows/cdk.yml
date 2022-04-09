@@ -29,6 +29,9 @@ jobs:
     - name: Build SPA
       working-directory: ./spa
       run: yarn && yarn build
+    - name: Build Blog
+      working-directory: ./blog
+      run: yarn && yarn build
     - name: Build API
       working-directory: ./serverless
       run: yarn && yarn build
