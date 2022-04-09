@@ -32,11 +32,3 @@ blogDist
 # package directories
 node_modules
 jspm_packages
-
-# CDK directories
-cdk.out/
-*.js
-*.d.ts
-.cdk.staging
-cdk.out
-cdk.context.json

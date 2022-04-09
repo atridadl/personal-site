@@ -1,0 +1,7 @@
+# CDK directories
+cdk.out/
+*.js
+*.d.ts
+.cdk.staging
+cdk.out
+cdk.context.json
