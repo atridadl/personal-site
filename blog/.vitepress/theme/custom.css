@@ -1,18 +1,13 @@
-/*keep the change things*/
 :root {
     --c-divider-light: #e2e8f0;
     --c-divider-dark: rgba(84, 84, 88, 0.48);
 
-    --c-brand: #333; /*  don't forget change the --tag-bg for tags */
+    --c-brand: #333;
     --c-brand-light: #333;
-
-    --font-family-base: 'PingFang SC', 'Microsoft Yahei', sans-serif;
-    --font-family-mono: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 
     --header-height: 3.6rem;
     --code-bg-color: #52525b;
 
-    /* pure theme color */
     --li-dot-color: #737373;
     --title-color: #334155;
     --date-color: #64748b;
@@ -21,6 +16,10 @@
 }
 
 /*theme reset*/
+body {
+    background-color: rgb(216, 209, 245);
+}
+
 a:link {
     text-decoration: none;
 }
@@ -39,7 +38,6 @@ h3 {
 .container {
     max-width: 58rem !important;
 }
-/* pc + mobile start */
 .sidebar-links {
     padding: 0.5rem 0;
 }
@@ -70,7 +68,7 @@ h3 {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: var(--li-dot-color);
+    /* background-color: var(--li-dot-color); */
 }
 .title {
     color: var(--title-color);
@@ -82,6 +80,9 @@ h3 {
 .date {
     color: var(--date-color);
     font-family: var(--date-font-family);
+}
+.nav-bar {
+    background-color: rgb(216, 209, 245) !important;
 }
 /*mobile*/
 @media screen and (max-width: 720px) {
@@ -150,4 +151,3 @@ h3 {
         margin-left: -1px;
     }
 }
-

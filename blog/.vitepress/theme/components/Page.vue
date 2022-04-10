@@ -36,7 +36,6 @@ const props = defineProps({
 
 <style scoped>
 .list {
-    border-bottom: 1px dashed var(--c-divider-light);
     padding: 1rem 0 0 0;
 }
 .list-header {
