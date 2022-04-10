@@ -2,7 +2,7 @@
   import { ref } from 'vue';
 
   // props
-  const props = defineProps(['logoRoute', 'currentRoute', 'routes', 'button']);
+  const props = defineProps(['logoRoute', 'currentRoute', 'routes', 'externalRoutes', 'links', 'button']);
 
   // data
   const open = ref(false);
@@ -28,6 +28,8 @@
     <div :class="open ? 'block': 'hidden'" class="w-full flex-grow sm:flex sm:items-center sm:w-auto">
       <div class="text-sm sm:flex-grow">
         <router-link v-for="route in routes" :key="route.route" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :to="route.path">{{ route.name }}</router-link>
+        <a v-for="externalRoute in externalRoutes" :key="externalRoute.name" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :href="externalRoute.route">{{ externalRoute.name }}</a>
+        <a v-for="link in links" :key="link.name" class="no-underline block mt-4 sm:inline-block sm:mt-0 text-black hover:text-pink-600 mr-4" :href="link.route" target="_blank">{{ link.name }}</a>
       </div>
       <div>
         <a :href="button.route" target="_blank" class="no-underline inline-block text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-pink-600 hover:text-pink-600 mt-4 sm:mt-0">{{ button.name }}</a>

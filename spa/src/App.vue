@@ -14,6 +14,13 @@
     route: "https://status.atridad.ca/status/public"
   });
 
+  const externalRoutes = ref([{
+    name: "Blog",
+    route: "https://blog.atridad.ca"
+  }]);
+
+  const links = ref([]);
+
   function setViewHeight () {
     let vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty('--vh', `${vh}px`)
@@ -28,7 +35,7 @@
 </script>
 
 <template>
-  <NavBar :logoRoute="logoRoute" :currentRoute="route.path" :routes="routes" :button="navButton" />
+  <NavBar :logoRoute="logoRoute" :currentRoute="route.path" :routes="routes" :externalRoutes="externalRoutes" :links="links" :button="navButton" />
   <router-view />
 </template>
 
