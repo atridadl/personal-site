@@ -94,7 +94,7 @@ export class BlogStack extends Stack {
 
     // ----------------------[S3 Bucket Deployment]----------------------
     new s3Deployment.BucketDeployment(this, `${ props.stage }-DeployBlogStatic`, {
-        sources: [s3Deployment.Source.asset("../blog/dist")],
+        sources: [s3Deployment.Source.asset("../blog/.vitepress/dist")],
         destinationBucket: bucket,
         distribution: cfDist,
         distributionPaths: [
