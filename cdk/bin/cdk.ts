@@ -3,7 +3,6 @@ import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { SPAStack } from "../lib/spa";
 import { APIStack } from "../lib/api";
-import { BlogStack } from "../lib/blog";
 
 const app = new cdk.App();
 
