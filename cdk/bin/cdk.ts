@@ -31,6 +31,15 @@ const spaStack = new SPAStack(app, `${ stage }-SPAStack`, {
   domain,
 });
 
+const blogStack = new SPAStack(app, `${ stage }-BlogStack`, {
+  env: {
+    region: process.env.CDK_DEFAULT_REGION,
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+  },
+  stage,
+  domain,
+});
+
 const apiStack = new APIStack(app, `${ stage }-APIStack`, {
   env: {
     region: process.env.CDK_DEFAULT_REGION,
