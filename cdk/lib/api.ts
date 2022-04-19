@@ -32,14 +32,9 @@ export class APIStack extends Stack {
 
     // ----------------------[DB]----------------------
     const quoteDB = new dynamodb.Table(this, `${ props.stage }-QuoteDB`, {
+        tableName: `${ props.stage }-QuoteDB`,
         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-    });
-
-    const quoteDBParameter = new ssm.StringParameter(this, `${ props.stage }-QuoteDBName`, {
-        description: "Name of the DynamoDB table to store quotes",
-        parameterName: `${ props.stage }-QuoteDBName`,
-        stringValue: `${ props.stage }-QuoteDB`
     });
 
     // ----------------------[API]----------------------
@@ -52,6 +47,9 @@ export class APIStack extends Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "root.main",
+        environment: {
+            DBNAME: `${ props.stage }-QuoteDB`,
+        }
     });
 
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
