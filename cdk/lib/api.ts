@@ -8,6 +8,8 @@ import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+import * as ssm from "aws-cdk-lib/aws-ssm";
 
 interface APIStackProps extends StackProps {
   stage: string,
@@ -26,6 +28,18 @@ export class APIStack extends Stack {
         domainName: `api.${ props.domain }`,
         hostedZone,
         region: "us-east-1",
+    });
+
+    // ----------------------[DB]----------------------
+    const quoteDB = new dynamodb.Table(this, `${ props.stage }-QuoteDB`, {
+        partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+    });
+
+    const quoteDBParameter = new ssm.StringParameter(this, `${ props.stage }-QuoteDBName`, {
+        description: "Name of the DynamoDB table to store quotes",
+        parameterName: `${ props.stage }-QuoteDBName`,
+        stringValue: `${ props.stage }-QuoteDB`
     });
 
     // ----------------------[API]----------------------
