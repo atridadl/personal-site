@@ -9,7 +9,7 @@ var params: ScanInput = {
 };
 
 const transformDynamoData  = (rawData: any) => {
-    if (!rawData || !!rawData.Items) {
+    if (!rawData || !rawData.Items) {
         return {
             Items: [],
         }

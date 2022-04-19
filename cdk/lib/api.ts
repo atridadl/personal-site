@@ -6,10 +6,10 @@ import { Construct } from "constructs";
 import { ARecord, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { HttpApi, HttpMethod, CorsHttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as iam from "aws-cdk-lib/aws-iam";
+
 interface APIStackProps extends StackProps {
   stage: string,
   domain: string,
@@ -39,6 +39,17 @@ export class APIStack extends Stack {
     // ----------------------[API]----------------------
     const httpApi = new HttpApi(this, `${ props.stage }-API`, {
         apiName: `${ props.stage }-API`,
+        corsPreflight: {
+            allowHeaders: ['Authorization'],
+            allowMethods: [
+              CorsHttpMethod.GET,
+              CorsHttpMethod.HEAD,
+              CorsHttpMethod.OPTIONS,
+              CorsHttpMethod.POST,
+            ],
+            allowOrigins: ['*'],
+            maxAge: Duration.days(10),
+          },
     });
 
     const rootFunction = new lambda.Function(this, `${ props.stage }-API-rootFunction`, {
