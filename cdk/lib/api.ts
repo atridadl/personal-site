@@ -47,9 +47,6 @@ export class APIStack extends Stack {
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "root.main",
-        environment: {
-            DBNAME: `${ props.stage }-QuoteDB`,
-        }
     });
 
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
@@ -73,6 +70,24 @@ export class APIStack extends Stack {
         path: "/v1/statusCheck", 
         methods: [HttpMethod.GET],
         integration: statusCheckIntegration,
+    });
+
+    const randomQuote = new lambda.Function(this, `${ props.stage }-API-RandomQuote`, {
+        functionName: `${ props.stage }-API-RandomQuote`,
+        runtime: lambda.Runtime.NODEJS_14_X,
+        code: lambda.Code.fromAsset("../serverless/functions"),
+        handler: "randomQuote.main",
+        environment: {
+            DBNAME: `${ props.stage }-QuoteDB`,
+        }
+    });
+
+    const randomQuoteIntegration = new HttpLambdaIntegration('API-RandomQuoteIntegration', randomQuote);
+
+    httpApi.addRoutes({
+        path: "/v1/randomQuote", 
+        methods: [HttpMethod.GET],
+        integration: randomQuoteIntegration,
     });
     // ----------------------[Cloudfront]----------------------
     const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-APICloudfront`, {
