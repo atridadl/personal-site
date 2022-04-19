@@ -9,8 +9,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
-import * as ssm from "aws-cdk-lib/aws-ssm";
-
+import * as iam from "aws-cdk-lib/aws-iam";
 interface APIStackProps extends StackProps {
   stage: string,
   domain: string,
@@ -89,6 +88,8 @@ export class APIStack extends Stack {
         methods: [HttpMethod.GET],
         integration: randomQuoteIntegration,
     });
+
+    quoteDB.grantReadData(randomQuote);
     // ----------------------[Cloudfront]----------------------
     const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-APICloudfront`, {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
