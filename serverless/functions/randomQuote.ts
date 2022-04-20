@@ -5,8 +5,11 @@ const dynamoClient = new DocumentClient({region: "ca-central-1"});
 
 var params = {
     TableName: process.env.DBNAME || "",
-    KeyConditionExpression: 'RecordType = quote',
     IndexName: process.env.DBINDEX,
+    ExpressionAttributeValues: {
+        ":rt": "quote",
+    },
+    KeyConditionExpression: 'RecordType = :qt',
 };
 
 const transformDynamoData  = (rawData: any) => {

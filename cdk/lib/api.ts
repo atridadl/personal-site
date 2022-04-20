@@ -39,7 +39,7 @@ export class APIStack extends Stack {
 
     const QuoteDBTypeGSIName = "RecordType-index"
 
-    const quoteDBTypeGSI = quoteDB.addGlobalSecondaryIndex({
+    quoteDB.addGlobalSecondaryIndex({
         indexName: QuoteDBTypeGSIName,
         partitionKey: {name: "RecordType", type: dynamodb.AttributeType.STRING},
         sortKey: {name: "id", type: dynamodb.AttributeType.STRING},
