@@ -5,7 +5,7 @@ const dynamoClient = new DocumentClient({region: "ca-central-1"});
 
 var params = {
     TableName: process.env.DBNAME || "",
-    KeyConditionExpression: 'Type = quote',
+    KeyConditionExpression: 'RecordType = quote',
     IndexName: process.env.DBINDEX,
 };
 
