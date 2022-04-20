@@ -9,7 +9,7 @@ var params = {
     ExpressionAttributeValues: {
         ":rt": "quote",
     },
-    KeyConditionExpression: 'RecordType = :qt',
+    KeyConditionExpression: 'RecordType = :rt',
 };
 
 const transformDynamoData  = (rawData: any) => {
