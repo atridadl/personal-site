@@ -1,11 +1,12 @@
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
-import { ScanInput } from "aws-sdk/clients/dynamodb";
 
 const dynamoClient = new DocumentClient({region: "ca-central-1"});
 
-var params: ScanInput = {
+var params = {
     TableName: process.env.DBNAME || "",
+    KeyConditionExpression: 'Type = quote',
+    IndexName: process.env.DBINDEX,
 };
 
 const transformDynamoData  = (rawData: any) => {
@@ -21,7 +22,8 @@ const transformDynamoData  = (rawData: any) => {
 };
 exports.main = async function randomQuote(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
     try {
-        const rawData = await dynamoClient.scan(params).promise();
+        const rawData = await dynamoClient.query(params).promise();
+        console.log(rawData);
         const transformedData = transformDynamoData(rawData);
 
         if (transformedData.Items.length > 0) {

@@ -37,8 +37,10 @@ export class APIStack extends Stack {
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
-    quoteDB.addGlobalSecondaryIndex({
-        indexName: "RecordType-index",
+    const QuoteDBTypeGSIName = "RecordType-index"
+
+    const quoteDBTypeGSI = quoteDB.addGlobalSecondaryIndex({
+        indexName: QuoteDBTypeGSIName,
         partitionKey: {name: "Type", type: dynamodb.AttributeType.STRING},
         sortKey: {name: "id", type: dynamodb.AttributeType.STRING},
     });
@@ -96,6 +98,7 @@ export class APIStack extends Stack {
         handler: "randomQuote.main",
         environment: {
             DBNAME: `${ props.stage }-QuoteDB`,
+            DBINDEX: QuoteDBTypeGSIName,
         }
     });
 
