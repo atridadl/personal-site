@@ -37,6 +37,12 @@ export class APIStack extends Stack {
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
+    quoteDB.addGlobalSecondaryIndex({
+        indexName: "RecordType-index",
+        partitionKey: {name: "Type", type: dynamodb.AttributeType.STRING},
+        sortKey: {name: "id", type: dynamodb.AttributeType.STRING},
+    });
+
     // ----------------------[API]----------------------
     const httpApi = new HttpApi(this, `${ props.stage }-API`, {
         apiName: `${ props.stage }-API`,
