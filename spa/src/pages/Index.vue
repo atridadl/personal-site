@@ -9,10 +9,11 @@
     { name: "JavaScript", colour: "yellow" },
     { name: "TypeScript", colour: "blue" },
     { name: "Git", colour: "black" },
-    { name: "Golang", colour: "cyan" },
+    { name: "Golang", colour: "teal" },
     { name: "Bash", colour: "purple" },
     { name: "Firebase", colour: "orange" },
     { name: "WordPress", colour: "blue" },
+    { name: "Node.js", colour: "green" },
   ];
 
   const socialLinks = [
