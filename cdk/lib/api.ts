@@ -30,9 +30,10 @@ export class APIStack extends Stack {
     });
 
     // ----------------------[DB]----------------------
-    const quoteDB = new dynamodb.Table(this, `${ props.stage }-QuoteDB`, {
-        tableName: `${ props.stage }-QuoteDB`,
+    const quoteDB = new dynamodb.Table(this, `${ props.stage }-DB`, {
+        tableName: `${ props.stage }-DB`,
         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
+        sortKey: { name: "Type", type: dynamodb.AttributeType.STRING },
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
