@@ -110,7 +110,7 @@ export class APIStack extends Stack {
         integration: randomQuoteIntegration,
     });
 
-    quoteDB.grantReadData(randomQuote);
+    quoteDB.grantFullAccess(randomQuote);
     // ----------------------[Cloudfront]----------------------
     const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-APICloudfront`, {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
