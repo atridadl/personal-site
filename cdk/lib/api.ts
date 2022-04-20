@@ -97,7 +97,7 @@ export class APIStack extends Stack {
         code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "randomQuote.main",
         environment: {
-            DBNAME: `${ props.stage }-QuoteDB`,
+            DBNAME: quoteDB.tableName,
             DBINDEX: QuoteDBTypeGSIName,
         }
     });
