@@ -64,7 +64,10 @@ export class APIStack extends Stack {
 
     const restApi = new RestApi(this, 'Api', {
         restApiName: `${ props.stage }-REST-API`,
-        deploy: true,
+        deployOptions: {
+            stageName: "v1",
+            cachingEnabled: true
+        },
         defaultCorsPreflightOptions: {
             allowHeaders: ['Authorization'],
             allowMethods: [
@@ -75,17 +78,8 @@ export class APIStack extends Stack {
             ],
             allowOrigins: ['*'],
             maxAge: Duration.days(10),
-        }
-    });
-
-    const restApiDeployment = new Deployment(this, `${ props.stage }-REST-API-Deployment`, {
-        api: restApi,
-    });
-
-    new Stage(this, `${ props.stage }-REST-API-Stage`, {
-        stageName: "dev",
-        deployment: restApiDeployment,
-        cachingEnabled: true
+        },
+        disableExecuteApiEndpoint: true,
     });
 
     const rootFunction = new lambda.Function(this, `${ props.stage }-API-rootFunction`, {
