@@ -92,7 +92,7 @@ export class APIStack extends Stack {
     const statusCheckIntegration = new HttpLambdaIntegration('API-StatusCheckIntegration', statusCheck);
 
     httpApi.addRoutes({
-        path: "/statusCheck", 
+        path: "/status", 
         methods: [HttpMethod.GET],
         integration: statusCheckIntegration,
     });
@@ -111,7 +111,7 @@ export class APIStack extends Stack {
     const randomQuoteIntegration = new HttpLambdaIntegration('API-RandomQuoteIntegration', randomQuote);
 
     httpApi.addRoutes({
-        path: "/randomQuote", 
+        path: "/quote", 
         methods: [HttpMethod.GET],
         integration: randomQuoteIntegration,
     });
