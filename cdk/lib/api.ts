@@ -59,6 +59,12 @@ export class APIStack extends Stack {
             allowOrigins: ['*'],
             maxAge: Duration.days(10),
           },
+          createDefaultStage: false,
+    });
+
+    httpApi.addStage(`${ props.stage }-API-Stage`, {
+        stageName: "v1",
+        autoDeploy: true,
     });
 
     const rootFunction = new lambda.Function(this, `${ props.stage }-API-rootFunction`, {
@@ -71,7 +77,7 @@ export class APIStack extends Stack {
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
 
     httpApi.addRoutes({
-        path: "/v1", 
+        path: "/", 
         methods: [HttpMethod.GET],
         integration: rootFunctionIntegration,
     });
@@ -86,7 +92,7 @@ export class APIStack extends Stack {
     const statusCheckIntegration = new HttpLambdaIntegration('API-StatusCheckIntegration', statusCheck);
 
     httpApi.addRoutes({
-        path: "/v1/statusCheck", 
+        path: "/statusCheck", 
         methods: [HttpMethod.GET],
         integration: statusCheckIntegration,
     });
@@ -105,7 +111,7 @@ export class APIStack extends Stack {
     const randomQuoteIntegration = new HttpLambdaIntegration('API-RandomQuoteIntegration', randomQuote);
 
     httpApi.addRoutes({
-        path: "/v1/randomQuote", 
+        path: "/randomQuote", 
         methods: [HttpMethod.GET],
         integration: randomQuoteIntegration,
     });
