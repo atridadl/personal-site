@@ -91,7 +91,7 @@ export class APIStack extends Stack {
 
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
 
-    restApi.root.addResource("/").addResource("GET", new LambdaIntegration(rootFunction), {});
+    restApi.root.addResource("/").addMethod("GET", new LambdaIntegration(rootFunction));
 
     httpApi.addRoutes({
         path: "/v1", 
