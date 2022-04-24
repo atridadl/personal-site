@@ -7,6 +7,7 @@ import { ARecord, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod, CorsHttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
+import { RestApi, Stage, Deployment } from "aws-cdk-lib/aws-apigateway";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
@@ -59,6 +60,32 @@ export class APIStack extends Stack {
             allowOrigins: ['*'],
             maxAge: Duration.days(10),
           },
+    });
+
+    const restApi = new RestApi(this, 'Api', {
+        restApiName: `${ props.stage }-REST-API`,
+        deploy: true,
+        defaultCorsPreflightOptions: {
+            allowHeaders: ['Authorization'],
+            allowMethods: [
+              CorsHttpMethod.GET,
+              CorsHttpMethod.HEAD,
+              CorsHttpMethod.OPTIONS,
+              CorsHttpMethod.POST,
+            ],
+            allowOrigins: ['*'],
+            maxAge: Duration.days(10),
+        }
+    });
+
+    const restApiDeployment = new Deployment(this, `${ props.stage }-REST-API-Deployment`, {
+        api: restApi,
+    });
+
+    new Stage(this, `${ props.stage }-REST-API-Stage`, {
+        stageName: "dev",
+        deployment: restApiDeployment,
+        cachingEnabled: true
     });
 
     const rootFunction = new lambda.Function(this, `${ props.stage }-API-rootFunction`, {

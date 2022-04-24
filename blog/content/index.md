@@ -7,7 +7,6 @@ const quote = ref("");
 onMounted(async () => {
     const res = await axios.get("https://api.atridad.ca/v1/randomQuote");
     quote.value = res.data;
-    console.log(res.data);
 });
 </script>
 
