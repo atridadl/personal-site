@@ -7,7 +7,7 @@ import { ARecord, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod, CorsHttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
-import { RestApi, Stage, Deployment } from "aws-cdk-lib/aws-apigateway";
+import { RestApi, Stage, Deployment, LambdaIntegration } from "aws-cdk-lib/aws-apigateway";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
 import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
@@ -90,6 +90,8 @@ export class APIStack extends Stack {
     });
 
     const rootFunctionIntegration = new HttpLambdaIntegration('API-RootFunctionIntegration', rootFunction);
+
+    restApi.root.addResource("/").addResource("GET", new LambdaIntegration(rootFunction), {});
 
     httpApi.addRoutes({
         path: "/v1", 
