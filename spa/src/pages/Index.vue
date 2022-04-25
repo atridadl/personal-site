@@ -19,7 +19,6 @@
   const socialLinks = [
     { name: "GitHub", type: "github", to: "https://github.com/atridadl" },
     { name: "Email", type: "mail", to: "mailto:atridad@icloud.com" },
-    { name: "Twitter", type: "twitter", to: "https://twitter.com/atridadl" },
     { name: "Instagram", type: "instagram", to: "https://www.instagram.com/atridadl/" },
     { name: "LinkedIn", type: "linkedin", to: "https://www.linkedin.com/in/atridad/" },
   ];
