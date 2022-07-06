@@ -40,4 +40,5 @@ jobs:
       env:
         AWS_DOMAIN: ${{ secrets.AWS_DOMAIN }}
         AWS_HOSTEDZONEID: ${{ secrets.AWS_HOSTEDZONEID }}
-      run: yarn deploy -c stage=prod -c domain=$AWS_DOMAIN --all
+        AWS_RESOURCE_PREFIX: ${{ secrets.AWS_RESOURCE_PREFIX }}
+      run: yarn deploy -c stage=prod -c domain=$AWS_DOMAIN -c prefix=$AWS_RESOURCE_PREFIX --all
