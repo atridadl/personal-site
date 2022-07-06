@@ -13,6 +13,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 interface SPAStackProps extends StackProps {
   stage: string,
   domain: string,
+  prefix: string,
 };
 
 export class SPAStack extends Stack {
@@ -20,8 +21,8 @@ export class SPAStack extends Stack {
     super(scope, id, props);
 
     // ----------------------[S3 Bucket]----------------------
-    const bucket = new s3.Bucket(this, `${ props.stage }-SPAStaticBucket`, {
-        bucketName: `${ props.stage }-spa-static-bucket`,
+    const bucket = new s3.Bucket(this, `${ props.prefix }-${ props.stage }-SPAStaticBucket`, {
+        bucketName: `${ props.prefix }-${ props.stage }-spa-static-bucket`,
         websiteIndexDocument: "index.html",
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         cors: [
@@ -34,11 +35,11 @@ export class SPAStack extends Stack {
     });
 
     // ----------------------[Certs]----------------------
-    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.stage }-HostedZone`, {
+    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.prefix }-${ props.stage }-HostedZone`, {
         domainName: props.domain,
     });
 
-    const certificate = new acm.DnsValidatedCertificate(this, `${ props.stage }-CrossRegionCertificate`, {
+    const certificate = new acm.DnsValidatedCertificate(this, `${ props.prefix }-${ props.stage }-CrossRegionCertificate`, {
         domainName: props.domain,
         hostedZone,
         region: "us-east-1",
@@ -59,7 +60,7 @@ export class SPAStack extends Stack {
         })
     );
 
-    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-SPAStackCloudfront`, {
+    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.prefix }-${ props.stage }-SPAStackCloudfront`, {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
         originConfigs: [{
@@ -96,15 +97,15 @@ export class SPAStack extends Stack {
 
     const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
 
-    new ARecord(this, `${ props.stage }-SPADNSRecord`, {
+    new ARecord(this, `${ props.prefix }-${ props.stage }-SPADNSRecord`, {
         zone: hostedZone,
         target,
         recordName: props.domain,
     });
 
     // ----------------------[S3 Bucket Deployment]----------------------
-    new s3Deployment.BucketDeployment(this, `${ props.stage }-DeploySPAStatic`, {
-        sources: [s3Deployment.Source.asset("../spa/dist")],
+    new s3Deployment.BucketDeployment(this, `${ props.prefix }-${ props.stage }-DeploySPAStatic`, {
+        sources: [s3Deployment.Source.asset("../spa/.output/public")],
         destinationBucket: bucket,
         distribution: cfDist,
         distributionPaths: [

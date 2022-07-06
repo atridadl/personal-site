@@ -8,46 +8,29 @@ import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { HttpApi, HttpMethod, CorsHttpMethod } from "@aws-cdk/aws-apigatewayv2-alpha";
 import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
-import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
 
 interface APIStackProps extends StackProps {
   stage: string,
   domain: string,
+  prefix: string,
 };
 
 export class APIStack extends Stack {
   constructor(scope: Construct, id: string, props: APIStackProps) {
     super(scope, id, props);
     // ----------------------[Certs]----------------------
-    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.stage }-HostedZone`, {
+    const hostedZone = route53.HostedZone.fromLookup(this, `${ props.prefix }-${ props.stage }-HostedZone`, {
         domainName: props.domain,
     });
 
-    const certificate = new acm.DnsValidatedCertificate(this, `${ props.stage }-API-CrossRegionCertificate`, {
+    const certificate = new acm.DnsValidatedCertificate(this, `${ props.prefix }-${ props.stage }-API-CrossRegionCertificate`, {
         domainName: `api.${ props.domain }`,
         hostedZone,
         region: "us-east-1",
     });
-
-    // ----------------------[DB]----------------------
-    const quoteDB = new dynamodb.Table(this, `${ props.stage }-DB`, {
-        tableName: `${ props.stage }-DB`,
-        partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
-        sortKey: { name: "RecordType", type: dynamodb.AttributeType.STRING },
-        billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-    });
-
-    const QuoteDBTypeGSIName = "RecordType-index"
-
-    quoteDB.addGlobalSecondaryIndex({
-        indexName: QuoteDBTypeGSIName,
-        partitionKey: {name: "RecordType", type: dynamodb.AttributeType.STRING},
-        sortKey: {name: "id", type: dynamodb.AttributeType.STRING},
-    });
-
     // ----------------------[API]----------------------
-    const httpApi = new HttpApi(this, `${ props.stage }-API`, {
-        apiName: `${ props.stage }-API`,
+    const httpApi = new HttpApi(this, `${ props.prefix }-${ props.stage }-API`, {
+        apiName: `${ props.prefix }-${ props.stage }-API`,
         corsPreflight: {
             allowHeaders: ['Authorization'],
             allowMethods: [
@@ -62,12 +45,12 @@ export class APIStack extends Stack {
           createDefaultStage: false,
     });
 
-    httpApi.addStage(`${ props.stage }-API-Stage`, {
+    httpApi.addStage(`${ props.prefix }-${ props.stage }-API-Stage`, {
         stageName: "v1",
         autoDeploy: true,
     });
 
-    const rootFunction = new lambda.Function(this, `${ props.stage }-API-rootFunction`, {
+    const rootFunction = new lambda.Function(this, `${ props.prefix }-${ props.stage }-API-rootFunction`, {
         functionName: `${ props.stage }-API-RootFunction`,
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset("../serverless/functions"),
@@ -82,8 +65,8 @@ export class APIStack extends Stack {
         integration: rootFunctionIntegration,
     });
 
-    const statusCheck = new lambda.Function(this, `${ props.stage }-API-StatusCheck`, {
-        functionName: `${ props.stage }-API-StatusCheck`,
+    const statusCheck = new lambda.Function(this, `${ props.prefix }-${ props.stage }-API-StatusCheck`, {
+        functionName: `${ props.prefix }-${ props.stage }-API-StatusCheck`,
         runtime: lambda.Runtime.NODEJS_14_X,
         code: lambda.Code.fromAsset("../serverless/functions"),
         handler: "statusCheck.main",
@@ -96,29 +79,8 @@ export class APIStack extends Stack {
         methods: [HttpMethod.GET],
         integration: statusCheckIntegration,
     });
-
-    const randomQuote = new lambda.Function(this, `${ props.stage }-API-RandomQuote`, {
-        functionName: `${ props.stage }-API-RandomQuote`,
-        runtime: lambda.Runtime.NODEJS_14_X,
-        code: lambda.Code.fromAsset("../serverless/functions"),
-        handler: "randomQuote.main",
-        environment: {
-            DBNAME: quoteDB.tableName,
-            DBINDEX: QuoteDBTypeGSIName,
-        }
-    });
-
-    const randomQuoteIntegration = new HttpLambdaIntegration('API-RandomQuoteIntegration', randomQuote);
-
-    httpApi.addRoutes({
-        path: "/quote", 
-        methods: [HttpMethod.GET],
-        integration: randomQuoteIntegration,
-    });
-
-    quoteDB.grantFullAccess(randomQuote);
     // ----------------------[Cloudfront]----------------------
-    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.stage }-APICloudfront`, {
+    const cfDist = new cloudfront.CloudFrontWebDistribution(this, `${ props.prefix }-${ props.stage }-APICloudfront`, {
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         priceClass: cloudfront.PriceClass.PRICE_CLASS_ALL,
         originConfigs: [{
@@ -158,7 +120,7 @@ export class APIStack extends Stack {
 
     const target = RecordTarget.fromAlias(new CloudFrontTarget(cfDist));
 
-    new ARecord(this, `${ props.stage }-DNSRecord-API`, {
+    new ARecord(this, `${ props.prefix }-${ props.stage }-DNSRecord-API`, {
         zone: hostedZone,
         target,
         recordName: `api.${ props.domain }`,
