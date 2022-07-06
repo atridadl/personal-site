@@ -28,7 +28,7 @@ jobs:
       run: npm i -g yarn
     - name: Build SPA
       working-directory: ./spa
-      run: yarn && yarn build
+      run: yarn && yarn generate
     - name: Build API
       working-directory: ./serverless
       run: yarn && yarn build
