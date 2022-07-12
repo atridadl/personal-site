@@ -1,22 +1,14 @@
 <script setup lang="ts">
+  import config from "../config";
+
   const route = useRoute();
   const router = useRouter();
   const logoRoute = ref("/")
   const navButton = ref();
 
-  const routes = ref([{
-    name: "Home",
-    route: "/"
-  },
-  {
-    name: "Projects",
-    route: "/projects"
-  },{
-    name: "Posts",
-    route: "/posts"
-  }]);
+  const routes = ref(config.routes);
 
-  const links = ref([]);
+  const links = ref(config.links);
   function setViewHeight () {
     let vh = window.innerHeight * 0.01
     document.documentElement.style.setProperty('--vh', `${vh}px`)

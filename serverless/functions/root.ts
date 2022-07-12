@@ -6,7 +6,6 @@ exports.main = async function root(event: APIGatewayProxyEventV2): Promise<APIGa
         body: JSON.stringify({
             endpoints: [
                 "status",
-                "quote"
             ]
         })
     }
